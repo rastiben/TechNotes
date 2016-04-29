@@ -35,6 +35,8 @@ public class addNote extends AppCompatActivity {
     int idClient;
     int idTech;
 
+    List<String> mTech;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,8 @@ public class addNote extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         if(settings.contains("tech"))
             tech.setText(settings.getString("tech",""));
+
+        new getTechSOAP().execute();
 
     }
 
@@ -69,15 +73,6 @@ public class addNote extends AppCompatActivity {
     
     public void getTech(View view)
     {
-        List<String> mTech = new ArrayList<String>();
-        mTech.add("Nicolas Maniez");
-        mTech.add("Lionel Tarlet");
-        mTech.add("Florent Quétaud");
-        mTech.add("Guillaume Martin");
-        mTech.add("Joël Pelhate");
-        mTech.add("Charles Cluzel");
-        mTech.add("Nicolas Villain");
-        //Create sequence of items  
         final CharSequence[] Techs = mTech.toArray(new String[mTech.size()]);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle("Technicien");
@@ -146,6 +141,33 @@ public class addNote extends AppCompatActivity {
                             .putExtra("Note",note.getText().toString())
                             .putExtra("noteDate",result));
             finish();
+        }
+    }
+
+    public class getTechSOAP extends AsyncTask<String, Void, String>
+    {
+        private final ProgressDialog dialog = new ProgressDialog(addNote.this);
+        @Override
+
+        protected void onPreExecute() {
+            /*this.dialog.setMessage("Envoi de la note");
+            this.dialog.show();*/
+        }
+
+        protected String doInBackground(String... params)
+        {
+            MSSQL mssql = new MSSQL();
+            //int idClient = mssql.addClient(clientS);
+            mTech = mssql.getTech();
+
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            dialog.dismiss();
         }
     }
 }

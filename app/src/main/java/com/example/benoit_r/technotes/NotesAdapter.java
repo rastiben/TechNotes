@@ -50,6 +50,8 @@ public class NotesAdapter extends ArrayAdapter<Notes> implements Filterable {
             holder = new NotesHolder();
             holder.listClient= (TextView) row.findViewById(R.id.listClient);
             holder.listDate = (TextView)row.findViewById(R.id.listDate);
+            holder.listAuteur= (TextView) row.findViewById(R.id.listAuteur);
+            holder.listNote = (TextView)row.findViewById(R.id.listNote);
 
             row.setTag(holder);
         }
@@ -73,6 +75,8 @@ public class NotesAdapter extends ArrayAdapter<Notes> implements Filterable {
         sdf = new SimpleDateFormat("MMM d");
 
         holder.listClient.setText(note.getClient());
+        holder.listAuteur.setText(note.getTech());
+        holder.listNote.setText(note.getNote());
         holder.listDate.setText(sdf.format(date));
 
         return row;
@@ -82,6 +86,8 @@ public class NotesAdapter extends ArrayAdapter<Notes> implements Filterable {
     {
         TextView listClient;
         TextView listDate;
+        TextView listNote;
+        TextView listAuteur;
     }
 
     @Override

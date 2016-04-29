@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -37,6 +38,9 @@ public class MSSQL {
 
     private static final String SOAP_ACTION_updateNote = "http://tempuri.org/updateNote";
     private static final String METHOD_NAME_updateNote = "updateNote";
+
+    private static final String SOAP_ACTION_getTech = "http://tempuri.org/getTech";
+    private static final String METHOD_NAME_getTech = "getTech";
 
     private static final String NAMESPACE = "http://tempuri.org/";
     private static final String URL = "http://192.168.0.66/Site/NotesService.asmx";
@@ -172,6 +176,39 @@ public class MSSQL {
             //return null;
         } finally {
             return notes;
+        }
+    }
+
+    public List<String> getTech()
+    {
+        List<String> mTech = new ArrayList<String>();
+
+        try {
+
+            SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_getTech);
+
+            //request.addProperty("client", client);
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet=true;
+            envelope.setOutputSoapObject(request);
+
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+            androidHttpTransport.call(SOAP_ACTION_getTech, envelope);
+
+            SoapObject result = (SoapObject)envelope.getResponse();
+
+            int count = result.getPropertyCount();
+
+            for(int i=0;i<count;i++){
+                mTech.add(result.getProperty(i).toString());
+            }
+            //return notes;
+        } catch (Exception e) {
+            String toto = e.getMessage();
+            //return null;
+        } finally {
+            return mTech;
         }
     }
 
