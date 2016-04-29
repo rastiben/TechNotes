@@ -10,10 +10,14 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by benoit_r on 28/04/2016.
@@ -72,12 +76,14 @@ public class NotesAdapter extends ArrayAdapter<Notes> implements Filterable {
             e.printStackTrace();
         }
 
-        sdf = new SimpleDateFormat("MMM d");
+        Date now = new Date();
+
+        //sdf = new SimpleDateFormat("MMM d");
 
         holder.listClient.setText(note.getClient());
         holder.listAuteur.setText(note.getTech());
         holder.listNote.setText(note.getNote());
-        holder.listDate.setText(sdf.format(date));
+        holder.listDate.setText(""+Days.daysBetween(new DateTime(date),new DateTime(now)).getDays()+". j");
 
         return row;
     }

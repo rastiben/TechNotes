@@ -1,1 +1,1 @@
-include ':app', ':ksoap'
+include ':app', ':ksoap', ':joda-time-2.9.3'

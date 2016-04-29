@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TechNotes.iml" filepath="$PROJECT_DIR$/TechNotes.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/joda-time-2.9.3/joda-time-2.9.3.iml" filepath="$PROJECT_DIR$/joda-time-2.9.3/joda-time-2.9.3.iml" />
       <module fileurl="file://$PROJECT_DIR$/ksoap/ksoap.iml" filepath="$PROJECT_DIR$/ksoap/ksoap.iml" />
     </modules>
   </component>

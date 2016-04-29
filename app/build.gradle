@@ -35,4 +35,5 @@ dependencies {
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile "com.android.support:design:${supportLibVersion}"
     compile project (':ksoap')
+    compile project (':joda-time-2.9.3')
 }
