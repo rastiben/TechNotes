@@ -5,10 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class notesList extends AppCompatActivity {
 
     ListView notes;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private ArrayList<Notes> arrayList;
     private NotesAdapter adapter;
@@ -32,6 +34,7 @@ public class notesList extends AppCompatActivity {
         setContentView(R.layout.activity_notes_list);
 
         notes = (ListView)findViewById(R.id.listNotes);
+        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe);
 
         arrayList = new ArrayList<Notes>();
         adapter = new NotesAdapter(this,R.layout.notesviewlist,arrayList);
@@ -52,6 +55,14 @@ public class notesList extends AppCompatActivity {
         });
 
         onCreateRunned = true;
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                                                     @Override
+                                                     public void onRefresh() {
+                                                         new AsynCallSoap().execute();
+                                                     }
+                                                 });
+
 
         new AsynCallSoap().execute();
     }
@@ -136,6 +147,8 @@ public class notesList extends AppCompatActivity {
         protected String doInBackground(String... params) {
             MSSQL mssql = new MSSQL();
 
+            arrayList.clear();
+
             ArrayList<Notes> temp = mssql.getAllNote();
 
             for (int i = 0; i < temp.size(); i++) {
@@ -150,6 +163,7 @@ public class notesList extends AppCompatActivity {
             super.onPostExecute(result);
             dialog.dismiss();
             adapter.notifyDataSetChanged();
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 }

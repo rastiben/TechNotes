@@ -18,6 +18,7 @@ public class modifyNote extends AppCompatActivity {
 
     EditText client;
     EditText note;
+    EditText tech;
     Notes clickedNote;
 
     String originalNote;
@@ -29,6 +30,7 @@ public class modifyNote extends AppCompatActivity {
 
         client = (EditText)findViewById(R.id.clientModifier);
         note = (EditText)findViewById(R.id.noteModifier);
+        tech = (EditText)findViewById(R.id.techModifier);
 
         clickedNote = (Notes)getIntent().getSerializableExtra("note");
 
@@ -36,6 +38,7 @@ public class modifyNote extends AppCompatActivity {
 
         client.setText(clickedNote.getClient());
         note.setText(clickedNote.getNote());
+        tech.setText(clickedNote.getTech());
     }
 
     public void cancelModification(View view){

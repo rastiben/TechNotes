@@ -19,6 +19,15 @@ public class Notes implements java.io.Serializable{
     private String client;
     private String Note;
     private String noteDate;
+    private String Tech;
+
+    public String getTech() {
+        return Tech;
+    }
+
+    public void setTech(String Tech) {
+        this.Tech = Tech;
+    }
 
     public String getNoteDate() {
         return noteDate;

@@ -46,7 +46,7 @@ public class MSSQL {
 
     }
 
-    public void addNote(String note,String date,int idClient)
+    public void addNote(String note,String date,int idClient,int idTech)
     {
         try {
 
@@ -55,6 +55,7 @@ public class MSSQL {
             request.addProperty("note", note);
             request.addProperty("date", date);
             request.addProperty("idClient", idClient);
+            request.addProperty("idTech", idTech);
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet=true;
@@ -161,6 +162,7 @@ public class MSSQL {
                 temp.setNote(actualNotes[1]);
                 temp.setClient(actualNotes[2]);
                 temp.setNoteDate(actualNotes[3]);
+                temp.setTech(actualNotes[4]);
 
                 notes.add(temp);
             }
