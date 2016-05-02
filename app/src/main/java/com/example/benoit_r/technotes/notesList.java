@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -28,6 +26,8 @@ public class notesList extends AppCompatActivity {
     private NotesAdapter adapter;
     private boolean onCreateRunned = false;
 
+    View blackLine;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +35,7 @@ public class notesList extends AppCompatActivity {
 
         notes = (ListView)findViewById(R.id.listNotes);
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe);
+        blackLine = (View)findViewById(R.id.blackLine);
 
         arrayList = new ArrayList<Notes>();
         adapter = new NotesAdapter(this,R.layout.notesviewlist,arrayList);
@@ -63,15 +64,21 @@ public class notesList extends AppCompatActivity {
                                                      }
                                                  });
 
-
         new AsynCallSoap().execute();
+    }
+
+    public boolean demandeDevis(MenuItem item){
+        Intent intent = new Intent(this,demandeDevis.class);
+        startActivity(intent);
+        return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menustart, menu);
         MenuItem searchItem = menu.findItem(R.id.search);
+
         final SearchView searchView = (SearchView) searchItem.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -99,6 +106,7 @@ public class notesList extends AppCompatActivity {
 
         return true;
     }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -133,6 +141,7 @@ public class notesList extends AppCompatActivity {
             Notes temp = new Notes(data.getStringExtra("Client"),
                     data.getStringExtra("Note"),
                     data.getStringExtra("noteDate"));
+            temp.setImportant(data.getBooleanExtra("important",false));
             arrayList.add(0, temp);
             adapter.notifyDataSetChanged();
         }
@@ -143,6 +152,10 @@ public class notesList extends AppCompatActivity {
         private final ProgressDialog dialog = new ProgressDialog(notesList.this);
 
         @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Récupération des notes");
+            this.dialog.show();
+        }
 
         protected String doInBackground(String... params) {
             MSSQL mssql = new MSSQL();
@@ -163,6 +176,7 @@ public class notesList extends AppCompatActivity {
             super.onPostExecute(result);
             dialog.dismiss();
             adapter.notifyDataSetChanged();
+            blackLine.setVisibility(View.VISIBLE);
             mSwipeRefreshLayout.setRefreshing(false);
         }
     }

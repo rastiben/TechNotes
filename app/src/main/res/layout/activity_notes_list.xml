@@ -11,20 +11,25 @@
     tools:context=".notesList"
     android:background="@color/lightGray">
 
+    <View
+        android:layout_width="2dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="50dp"
+        android:background="@color/colorPrimary"
+        android:visibility="invisible"
+        android:id="@+id/blackLine"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <!--<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Notes :"
-            android:textSize="25dp"
-            android:layout_margin="8dp"/>-->
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
 
             <ListView
                 android:id="@+id/listNotes"
@@ -33,7 +38,9 @@
                 android:layout_margin="8dp"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="10.0sp"
-                ></ListView>
+                >
+
+            </ListView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>

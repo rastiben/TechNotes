@@ -44,12 +44,6 @@
                 android:text="Client : "
                 android:textSize="20dp"
                 />
-            <!--<Button
-                style="@android:style/Widget.EditText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:onClick="getCustomer"
-                android:id="@+id/client"/>-->
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,6 +51,22 @@
                 android:onClick="getCustomer"
                 android:textIsSelectable="true"
                 android:focusable="false"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Important : "
+                android:textSize="20dp"
+                />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Important"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,13 +91,33 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
+
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fabSize="normal"
-            android:src="@drawable/ic_save_black_24dp"
             android:layout_alignParentRight="true"
-            android:onClick="addNote"/>
+            android:layout_margin="8dp"
+            android:onClick="addNote"
+            android:src="@drawable/ic_add_black_24dp"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal"
+            android:id="@+id/buttonAddNote"/>
 
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:onClick="takePicture"
+            android:src="@drawable/ic_photo_camera_black_24dp"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal"
+            android:layout_below="@id/buttonAddNote"
+            android:layout_alignParentRight="true"/>
+
+        <Gallery
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+        </Gallery>
     </RelativeLayout>
 </RelativeLayout>

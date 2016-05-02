@@ -20,6 +20,15 @@ public class Notes implements java.io.Serializable{
     private String Note;
     private String noteDate;
     private String Tech;
+    private Boolean important;
+
+    public Boolean getImportant() {
+        return important;
+    }
+
+    public void setImportant(Boolean important) {
+        this.important = important;
+    }
 
     public String getTech() {
         return Tech;

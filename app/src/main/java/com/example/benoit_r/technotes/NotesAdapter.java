@@ -12,7 +12,10 @@ import android.widget.TextView;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,9 +56,13 @@ public class NotesAdapter extends ArrayAdapter<Notes> implements Filterable {
 
             holder = new NotesHolder();
             holder.listClient= (TextView) row.findViewById(R.id.listClient);
-            holder.listDate = (TextView)row.findViewById(R.id.listDate);
+            holder.listDateDayInt = (TextView)row.findViewById(R.id.listDateDayInt);
+            holder.listDateDayString = (TextView)row.findViewById(R.id.listDateDayString);
+            holder.listDateMonth = (TextView)row.findViewById(R.id.listDateMonth);
+            holder.listDateYear = (TextView)row.findViewById(R.id.listDateYear);
             holder.listAuteur= (TextView) row.findViewById(R.id.listAuteur);
             holder.listNote = (TextView)row.findViewById(R.id.listNote);
+            holder.important = (View)row.findViewById(R.id.importantIcon);
 
             row.setTag(holder);
         }
@@ -67,23 +74,28 @@ public class NotesAdapter extends ArrayAdapter<Notes> implements Filterable {
         Notes note = newNotes.get(position);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh-mm-ss");
-        Date date = null;
+        DateTime date = null;
 
         try {
-            String toto = note.getNoteDate();
-            date = sdf.parse(note.getNoteDate());
+            date = new DateTime(sdf.parse(note.getNoteDate()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        Date now = new Date();
+        //Date now = new Date();
 
-        //sdf = new SimpleDateFormat("MMM d");
+        DecimalFormat df = new DecimalFormat("00");
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("EEE");
+        DateTimeFormatter fmtM = DateTimeFormat.forPattern("MMM");
 
         holder.listClient.setText(note.getClient());
         holder.listAuteur.setText(note.getTech());
         holder.listNote.setText(note.getNote());
-        holder.listDate.setText(""+Days.daysBetween(new DateTime(date),new DateTime(now)).getDays()+". j");
+        holder.listDateDayInt.setText(df.format(date.getDayOfMonth()));
+        holder.listDateDayString.setText(fmt.print(date).replace(".","").toUpperCase());
+        holder.listDateMonth.setText(fmtM.print(date).replace(".","").toUpperCase());
+        holder.listDateYear.setText(String.valueOf(date.getYear()));
+        holder.important.setVisibility(note.getImportant() ? View.VISIBLE : View.INVISIBLE);
 
         return row;
     }
@@ -91,9 +103,13 @@ public class NotesAdapter extends ArrayAdapter<Notes> implements Filterable {
     static class NotesHolder
     {
         TextView listClient;
-        TextView listDate;
+        TextView listDateDayString;
+        TextView listDateDayInt;
+        TextView listDateMonth;
+        TextView listDateYear;
         TextView listNote;
         TextView listAuteur;
+        View important;
     }
 
     @Override

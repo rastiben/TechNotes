@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ public class modifyNote extends AppCompatActivity {
     EditText client;
     EditText note;
     EditText tech;
+    CheckBox important;
     Notes clickedNote;
 
     String originalNote;
@@ -31,6 +33,7 @@ public class modifyNote extends AppCompatActivity {
         client = (EditText)findViewById(R.id.clientModifier);
         note = (EditText)findViewById(R.id.noteModifier);
         tech = (EditText)findViewById(R.id.techModifier);
+        important = (CheckBox)findViewById(R.id.importantModifier);
 
         clickedNote = (Notes)getIntent().getSerializableExtra("note");
 
@@ -39,6 +42,8 @@ public class modifyNote extends AppCompatActivity {
         client.setText(clickedNote.getClient());
         note.setText(clickedNote.getNote());
         tech.setText(clickedNote.getTech());
+        important.setChecked(clickedNote.getImportant());
+
     }
 
     public void cancelModification(View view){

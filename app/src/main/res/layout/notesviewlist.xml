@@ -1,48 +1,133 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="16dp"
-    android:background="@drawable/liststyle">
+    android:background="@drawable/liststyle"
+    android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/listClient"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="8dp"
-        android:textSize="18dp"
-        android:textStyle="bold"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/listNote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_below="@+id/listClient"
-        android:textSize="15dp"/>
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dp"
+            android:background="@color/colorPrimary" />
 
-    <TextView
-        android:id="@+id/listDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/listAuteur"
-        android:layout_marginRight="8dp"
-        android:textSize="14dp"
-        android:textColor="@color/gray"/>
+        <View
+            android:id="@+id/view1"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="47dp"
+            android:background="@drawable/dot" />
 
-    <TextView
-        android:id="@+id/listAuteur"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/listNote"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:textSize="14dp"
-        android:textColor="@color/gray"/>
+        <View
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/liststyleblue"
+            android:layout_marginLeft="36.5dp"
+            android:layout_marginTop="12dp"
+            android:id="@+id/day"/>
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/listDateMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MAY"
+            android:textColor="@color/colorPrimary"
+            android:textSize="8.5dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="17dp"/>
+
+        <TextView
+            android:id="@+id/listDateYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2014"
+            android:textColor="@color/colorPrimary"
+            android:textSize="5.5dp"
+            android:layout_marginLeft="13.5dp"
+            android:layout_marginTop="25dp"/>
+
+        <TextView
+            android:id="@+id/listDateDayString"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TOT"
+            android:textColor="@android:color/white"
+            android:textSize="8dp"
+            android:layout_marginLeft="43.5dp"
+            android:layout_marginTop="13dp"/>
+
+        <TextView
+            android:id="@+id/listDateDayInt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="02"
+            android:textColor="@android:color/white"
+            android:textSize="14dp"
+            android:layout_marginLeft="43dp"
+            android:layout_marginTop="20dp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/listClient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:paddingTop="10dp"
+            android:text="TOTO"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/listNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listClient"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:layout_marginLeft="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_centerVertical="true"
+            android:text="TOTO"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/listAuteur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listNote"
+            android:paddingBottom="16dp"
+            android:layout_marginLeft="20dp"
+            android:text="TOTO"
+            android:textColor="@color/gray"
+            android:textSize="14dp" />
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_error_outline_black_24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/importantIcon"
+                android:visibility="invisible"/>
+
+    </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
