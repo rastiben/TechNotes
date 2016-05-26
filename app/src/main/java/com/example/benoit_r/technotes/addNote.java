@@ -7,17 +7,30 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Gallery;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,9 +51,12 @@ public class addNote extends AppCompatActivity {
     EditText note;
     EditText tech;
     CheckBox important;
+    ImageView gallery;
 
     String noteS;
     Boolean checked;
+    String image;
+    Uri fileURI;
 
     int idClient;
     int idTech;
@@ -55,7 +71,12 @@ public class addNote extends AppCompatActivity {
         note = (EditText) findViewById(R.id.note);
         tech = (EditText) findViewById(R.id.tech);
         important = (CheckBox) findViewById(R.id.Important);
+        gallery = (ImageView) findViewById(R.id.gallery);
         //dbHandler = new MyDBHandler(this,null,null,1);
+
+        //TOOLBAR
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         note.setHorizontallyScrolling(false);
         note.setMaxLines(Integer.MAX_VALUE);
@@ -71,10 +92,23 @@ public class addNote extends AppCompatActivity {
 
     }
 
+
+    /*public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menustart, menu);
+        return true;
+    }*/
+
     public void addNote(View view) {
         noteS = note.getText().toString();
         checked = important.isChecked();
-        new AsynCallSoap().execute();
+
+        //ENVOIE DE LA PHOTO ET DE LA NOTE
+        if(image != null)
+            new uploadPhoto().execute();
+        else
+            new AsynCallSoap().execute("");
+
     }
 
     public void getCustomer(View view) {
@@ -84,11 +118,12 @@ public class addNote extends AppCompatActivity {
     }
 
     public void takePicture(View view) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(intent, REQUEST_CODE);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        fileURI = getOutputMediaFileUri();
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,fileURI);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_CODE);
+        }
     }
 
     public void getTech(View view) {
@@ -118,34 +153,26 @@ public class addNote extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 0) {
             idClient = data.getIntExtra("idClient", -1);
             //String Client = data.getStringExtra("Client");
             client.setText(data.getStringExtra("Client"));
             // do something with B's return values
-        } else if (resultCode == REQUEST_CODE) {
-            InputStream stream = null;
-            try {
-                // recyle unused bitmaps
-                if (bitmap != null) {
-                    bitmap.recycle();
-                }
-                stream = getContentResolver().openInputStream(data.getData());
-                bitmap = BitmapFactory.decodeStream(stream);
+        } else if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
 
-                //addToGallery
-                //imageView.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } finally {
-                {
-                    if (stream != null)
-                        try {
-                            stream.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                }
+            try {
+                Bitmap bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), fileURI);
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.JPEG, 40, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                image = Base64.encodeToString(byteArray,Base64.DEFAULT);
+
+                gallery.setImageBitmap(Bitmap.createScaledBitmap(bmp,140,200,true));
+
+            } catch(IOException e){
+
             }
         }
     }
@@ -165,9 +192,12 @@ public class addNote extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh-mm-ss");
             //ALLEZ CHERCHER LE CLIENT
 
-            MSSQL mssql = new MSSQL();
-            //int idClient = mssql.addClient(clientS);
-            mssql.addNote(noteS, sdf.format(d), idClient, idTech, checked);
+            MSSQL.addNote(noteS,
+                    sdf.format(d),
+                    idClient,
+                    idTech,
+                    checked,
+                    params[0]);
 
             return sdf.format(d);
         }
@@ -182,7 +212,8 @@ public class addNote extends AppCompatActivity {
                     new Intent().putExtra("Client", client.getText().toString())
                             .putExtra("Note", note.getText().toString())
                             .putExtra("noteDate", result)
-                            .putExtra("important", checked));
+                            .putExtra("important", checked)
+                            .putExtra("photo",(image == null) ? false : true));
             finish();
         }
     }
@@ -198,9 +229,8 @@ public class addNote extends AppCompatActivity {
         }
 
         protected String doInBackground(String... params) {
-            MSSQL mssql = new MSSQL();
-            //int idClient = mssql.addClient(clientS);
-            mTech = mssql.getTech();
+
+            mTech = MSSQL.getTech();
 
             return "";
         }
@@ -211,4 +241,67 @@ public class addNote extends AppCompatActivity {
             dialog.dismiss();
         }
     }
+
+    public class uploadPhoto extends AsyncTask<String, Void, String> {
+        private final ProgressDialog dialog = new ProgressDialog(addNote.this);
+
+        @Override
+
+        protected void onPreExecute() {
+            this.dialog.setMessage("Envoi de la photo");
+            this.dialog.show();
+        }
+
+        protected String doInBackground(String... params) {
+
+            String result = MSSQL.uploadPhoto(image);
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            dialog.dismiss();
+
+            new AsynCallSoap().execute(result);
+
+            Toast.makeText(getApplicationContext(), "Photo envoyé", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    //IMAGE
+    /** Create a file Uri for saving an image or video */
+    private static Uri getOutputMediaFileUri(){
+        return Uri.fromFile(getOutputMediaFile());
+    }
+
+    /** Create a File for saving an image or video */
+    private static File getOutputMediaFile(){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+
+        return mediaFile;
+    }
+
+
 }

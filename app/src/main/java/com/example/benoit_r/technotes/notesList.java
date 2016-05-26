@@ -142,6 +142,7 @@ public class notesList extends AppCompatActivity {
                     data.getStringExtra("Note"),
                     data.getStringExtra("noteDate"));
             temp.setImportant(data.getBooleanExtra("important",false));
+            temp.setPhoto(data.getBooleanExtra("photo",false));
             arrayList.add(0, temp);
             adapter.notifyDataSetChanged();
         }
@@ -158,11 +159,10 @@ public class notesList extends AppCompatActivity {
         }
 
         protected String doInBackground(String... params) {
-            MSSQL mssql = new MSSQL();
 
             arrayList.clear();
 
-            ArrayList<Notes> temp = mssql.getAllNote();
+            ArrayList<Notes> temp = MSSQL.getAllNote();
 
             for (int i = 0; i < temp.size(); i++) {
                 arrayList.add(temp.get(i));

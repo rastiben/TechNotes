@@ -99,9 +99,8 @@ public class Customers extends AppCompatActivity {
         }
 
         protected String doInBackground(String... params) {
-            MSSQL mssql = new MSSQL();
 
-            ArrayList<Notes> temp = mssql.getAllCustomers();
+            ArrayList<Notes> temp = MSSQL.getAllCustomers();
 
             for (int i = 0; i < temp.size(); i++) {
                 arrayList.add(temp.get(i));

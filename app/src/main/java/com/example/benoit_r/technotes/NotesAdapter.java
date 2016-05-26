@@ -63,6 +63,7 @@ public class NotesAdapter extends ArrayAdapter<Notes> implements Filterable {
             holder.listAuteur= (TextView) row.findViewById(R.id.listAuteur);
             holder.listNote = (TextView)row.findViewById(R.id.listNote);
             holder.important = (View)row.findViewById(R.id.importantIcon);
+            holder.photo = (View)row.findViewById(R.id.photoIcon);
 
             row.setTag(holder);
         }
@@ -96,6 +97,7 @@ public class NotesAdapter extends ArrayAdapter<Notes> implements Filterable {
         holder.listDateMonth.setText(fmtM.print(date).replace(".","").toUpperCase());
         holder.listDateYear.setText(String.valueOf(date.getYear()));
         holder.important.setVisibility(note.getImportant() ? View.VISIBLE : View.INVISIBLE);
+        holder.photo.setVisibility(note.getPhoto() ? View.VISIBLE : View.INVISIBLE);
 
         return row;
     }
@@ -110,6 +112,7 @@ public class NotesAdapter extends ArrayAdapter<Notes> implements Filterable {
         TextView listNote;
         TextView listAuteur;
         View important;
+        View photo;
     }
 
     @Override

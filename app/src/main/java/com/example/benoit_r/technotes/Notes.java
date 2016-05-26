@@ -21,11 +21,26 @@ public class Notes implements java.io.Serializable{
     private String noteDate;
     private String Tech;
     private Boolean important;
+    private Boolean photo;
+    private String idPhoto;
+
+    public String getIdPhoto() {
+        return idPhoto;
+    }
+    public void setIdPhoto(String idPhoto) {
+        this.idPhoto = idPhoto;
+    }
+
+    public Boolean getPhoto() {
+        return photo;
+    }
+    public void setPhoto(Boolean photo) {
+        this.photo = photo;
+    }
 
     public Boolean getImportant() {
         return important;
     }
-
     public void setImportant(Boolean important) {
         this.important = important;
     }

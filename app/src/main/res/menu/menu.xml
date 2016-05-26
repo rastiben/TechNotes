@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/search"
-        android:hint="Rechercher"
-        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
+        android:icon="@drawable/ic_save_black_24dp"
         android:title="@string/app_name"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="collapseActionView|ifRoom" />
+        app:showAsAction="collapseActionView|ifRoom"
+        android:onClick="addNote"
+        />
+
+    <item
+        android:icon="@drawable/ic_photo_camera_black_24dp"
+        android:title="@string/app_name"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="collapseActionView|ifRoom"
+        android:onClick="takePicture"
+        />
 
 </menu>
